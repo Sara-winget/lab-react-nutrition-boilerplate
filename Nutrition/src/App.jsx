@@ -1,65 +1,31 @@
+import React from "react";
+import FoodData from "../../resources/FoodData";
+import FoodBox from "./components/FoodBox";
+import Search from "./components/Search";
 import { useState } from "react";
-import "./App.css";
+function App(){
+  const [foodList, setFoodList]=useState(FoodData);
+  
+  const [query,setQuery]=useState('');
+  const handleSearch=(e)=>{
+    const searchQuery=e.target.value
+ setQuery(e.target.value)
+  
+  setFoodList(FoodData.filter(item=>
+  item.name.toLowerCase().includes(searchQuery.toLowerCase())
+ ))}
 
-import FoodBox from "./component/FoodBox";
-
-function App() {
-  const foods=[
-    {
-      "id": 0,
-      "img": "https://s3.ap-south-1.amazonaws.com/kalvi-education.github.io/pizza-react.jpg",
-      "name": "pizza",
-      "cal": 266
-    },
-    {
-      "id": 1,
-      "img": "https://s3.ap-south-1.amazonaws.com/kalvi-education.github.io/apple-react.jpeg",
-      "name": "apple",
-      "cal": 52
-    },
-    {
-      "id": 3,
-      "img": "https://s3.ap-south-1.amazonaws.com/kalvi-education.github.io/orange-react.jpeg",
-      "name": "oranges",
-      "cal": 47
-    },
-    {
-      "id": 4,
-      "img": "https://s3.ap-south-1.amazonaws.com/kalvi-education.github.io/almonds-react.jpeg",
-      "name": "almonds",
-      "cal": 7
-    },
-    {
-      "id": 5,
-      "img": "https://s3.ap-south-1.amazonaws.com/kalvi-education.github.io/burger-react.jpeg",
-      "name": "burger",
-      "cal": 295
-    }
-  ]
-  const [filFoods, setFilFoods] = useState(foods);
-
-  const handleSearch = (event) => {
-    const searchVal = event.target.value;
-    setFilFoods(
-      foods.filter((food) => food.name.toLowerCase().includes(searchVal))
-    );
-  };
-
-  return (
+ const handleReset=()=>{
+  setQuery('')
+  setFoodList(FoodData)
+ }
+  return(
     <>
-      <div>
-        <input
-          className="FoodBox"
-          type="text"
-          onChange={handleSearch}
-          
-        />
-        {filFoods.map((food, index) => (
-          <FoodBox key={index} food={food} />
-        ))}
-      </div>
+    <Search query={query} handleSearch={handleSearch} handleReset={handleReset}/>
+    {foodList.map((food,index)=>(
+      <FoodBox key={index} food={food} />
+    ))}
     </>
-  );
+  )
 }
-
 export default App;

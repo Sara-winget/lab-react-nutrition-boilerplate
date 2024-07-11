@@ -1,42 +1,53 @@
-// src/components/FoodBox.js
-import React, { useState } from 'react';
+import React from 'react'
+import { useState } from 'react';
+import {useRef} from 'react'
 
-const FoodBox = ({ id, img, name, cal, handleAdd }) => {
-  const [quantity, setQuantity] = useState(0);
+function FoodBox({food}){
+  const myRef=useRef();
+  const [num,setNum]=useState(0)
+  const [val,setVal]=useState(0)
+  return(
+    <>
+    <div className="box" >
+  <article className="media">
+    <div style={{display:'flex'}}>
+    <div style={{display:'flex',height:150,width:1000, padding:30,margin:20,boxSizing:'border-box',backgroundColor:'lightblue',alignItems:'center',justifyContent:'space-between'}}>
 
-  const handleQuantityChange = (e) => {
-    setQuantity(Number(e.target.value));
-  };
-
-  return (
-    <div className="box">
-      <figure className="image">
-        <img src={img} height="60px"/>
+    <div className="media-left">
+      <figure className="image is-64x64">
+        <img src={food.img} height={50} width={50}/>
       </figure>
+    </div>
+    <div className="media-content" style={{ fontSize:30}}>
       <div className="content">
         <p>
-          <strong>{name}</strong> <br />
-          <small>{cal} cal</small>
+          <strong>{food.name}</strong> <br />
+          <small>{food.cal}</small>
         </p>
       </div>
-      <div className="media-right">
-        <div className="field has-addons">
-          <div className="control">
-            <input className="input" type="number" value={quantity} onChange={handleQuantityChange} />
-          </div>
-          <div className="control">
-            <button className="button is-info" onClick={() => handleAdd(id, quantity)}>
-              +
-            </button>
-          </div>
-        </div>
-        <button className="button" onClick={() => setQuantity(0)}>reset</button>
-      </div>
-      <div>
-        <p>{quantity} {name} = {quantity * cal} calories</p>
-      </div>
     </div>
-  );
-};
-
+    <div className="media-right" style={{ display:'flex'}}>
+      
+        <div className="control">
+          <input ref={myRef} id="num"  type="number" placeholder='type something here' onChange={(e)=>{setNum(e.target.value)}} style={{height:40,width:200} }/>
+        </div>
+        <div className="control">
+          <button onClick={()=>{setVal(num)}} className="button is-info">
+            +
+          </button>
+        </div>
+     
+    </div >
+    </div>
+      <div className='result' style={{backgroundColor:'white'}}>
+   <h2> {val} {food.name}= {val*food.cal} clories </h2>
+   
+   <button onClick={()=>{setNum(0); setVal(0); myRef.current.value='' }}>Reset</button>
+      </div>
+      </div>
+  </article>
+</div>
+    </>
+  )
+}
 export default FoodBox;
